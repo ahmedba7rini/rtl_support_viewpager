@@ -195,6 +195,12 @@ public class RtlSupportViewPager extends ViewGroup {
     private float mLastMotionY;
     private float mInitialMotionX;
     private float mInitialMotionY;
+
+    /**
+     * Position of the last motion event on blocking page.
+     */
+    private float mSwipeBlockedLastMotionX;
+
     /**
      * ID of the active pointer. This is used to retain consistency during
      * drags/flings if multiple pointers are used.
@@ -1961,12 +1967,12 @@ public class RtlSupportViewPager extends ViewGroup {
 		switch (event.getAction()) {
 
 		case MotionEvent.ACTION_DOWN:
-			mLastMotionX = event.getX();
+			mSwipeBlockedLastMotionX = event.getX();
 
 			break;
 			
 		case MotionEvent.ACTION_UP:
-			deltaX = mLastMotionX - event.getX();
+			deltaX = mSwipeBlockedLastMotionX - event.getX();
 
 			if (deltaX < 0) {
 				/* is going to LEFT */
