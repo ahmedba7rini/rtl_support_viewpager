@@ -82,7 +82,9 @@ public class CollectionDemoActivity extends FragmentActivity {
 		/*
 		 * to disable swiping on 3rd page (index 2).
 		 */
-		mViewPager.blockSwipe(2);
+		mViewPager.blockSwipeTo(2);
+		
+//		mViewPager.
 		
 		/*
 		 * 
@@ -141,7 +143,7 @@ public class CollectionDemoActivity extends FragmentActivity {
 		 * We should implement the getRtlItem() not getItem(), to use the directions controls. 
 		 */
 		@Override
-		public Fragment getRtlItem(int position) {
+		public Fragment getLtrItem(int position) {
 			Fragment fragment;
 			Bundle args;
 			

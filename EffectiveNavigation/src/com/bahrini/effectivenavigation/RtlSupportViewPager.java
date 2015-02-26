@@ -119,7 +119,7 @@ public class RtlSupportViewPager extends ViewGroup {
 	
     protected int mCutOffPage = -1;
     
-    protected int mNoOfPages;
+//    protected int mNoOfPages;
 
     /**
      * Used to track what the expected number of items in the adapter should be.
@@ -480,7 +480,7 @@ public class RtlSupportViewPager extends ViewGroup {
         if (mAdapter instanceof RtlSupportPagerAdapter)
         	setPagerDirection(((RtlSupportPagerAdapter)mAdapter).getPagerDirection());
         
-        setCurrentItem(getItem(0));
+        setCurrentItem(0);
     }
 
     private void removeNonDecorViews() {
@@ -519,12 +519,15 @@ public class RtlSupportViewPager extends ViewGroup {
      * @param item Item index to select
      */
     public void setCurrentItem(int item) throws ArrayIndexOutOfBoundsException{ // add exception if item > cutoff
+    	item = getIndex(item);
     	if (mBlockedDirection == BlockingDirection.BLOCKING_DIRECTION_LEFT && item < mCutOffPage){
-    		throw new ArrayIndexOutOfBoundsException(String.format("The Item index is smaller than the CutOfPage: you are blocking all items < %1$d, and you try to start pager using item %2$d", mCutOffPage, item));
+    		/*throw new ArrayIndexOutOfBoundsException(String.format("The Item index is smaller than the CutOfPage: you are blocking all items < %1$d, and you try to start pager using item %2$d", mCutOffPage, item));*/
+    		return;
     	}
     	
     	if (mBlockedDirection == BlockingDirection.BLOCKING_DIRECTION_RIGHT && item > mCutOffPage){
-    		throw new ArrayIndexOutOfBoundsException(String.format("The Item index is bigger than the CutOfPage: you are blocking all items > %1$d, and you try to start pager using item %2$d", mCutOffPage, item));
+//    		throw new ArrayIndexOutOfBoundsException(String.format("The Item index is bigger than the CutOfPage: you are blocking all items > %1$d, and you try to start pager using item %2$d", mCutOffPage, item));
+    		return;
     	}
     	
         mPopulatePending = false;
@@ -543,7 +546,7 @@ public class RtlSupportViewPager extends ViewGroup {
     }
 
     public int getCurrentItem() {
-        return mCurItem;
+        return getIndex(mCurItem);
     }
 
     void setCurrentItemInternal(int item, boolean smoothScroll, boolean always) {
@@ -1918,6 +1921,7 @@ public class RtlSupportViewPager extends ViewGroup {
                  * Remember location of down touch.
                  * ACTION_DOWN always refers to pointer index 0.
                  */
+				mSwipeBlockedLastMotionX = ev.getX();
                 mLastMotionX = mInitialMotionX = ev.getX();
                 mLastMotionY = mInitialMotionY = ev.getY();
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
@@ -1966,18 +1970,13 @@ public class RtlSupportViewPager extends ViewGroup {
 
 		switch (event.getAction()) {
 
-		case MotionEvent.ACTION_DOWN:
-			mSwipeBlockedLastMotionX = event.getX();
-
-			break;
-			
 		case MotionEvent.ACTION_UP:
 			deltaX = mSwipeBlockedLastMotionX - event.getX();
 
 			if (deltaX < 0) {
 				/* is going to LEFT */
 				if (!isSwipeLeft) {
-					if (getCurrentItem() <= mCutOffPage) {
+					if (mCurItem <= mCutOffPage) {
 						return false;
 					}
 				}
@@ -1985,7 +1984,7 @@ public class RtlSupportViewPager extends ViewGroup {
 			} else {
 				/* is going to RIGHT */
 				if (!isSwipeRight) {
-					if (getCurrentItem() >= mCutOffPage) {
+					if (mCurItem >= mCutOffPage) {
 						return false;
 					}
 				}
@@ -2001,7 +2000,7 @@ public class RtlSupportViewPager extends ViewGroup {
     
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-    	if (!isSwipeBlocked(ev)) return false; 
+//    	if (!isSwipeBlocked(ev)) return false; 
         
     	if (mFakeDragging) {
             // A fake drag is in progress already, ignore this real one
@@ -2093,7 +2092,10 @@ public class RtlSupportViewPager extends ViewGroup {
                     final int totalDelta = (int) (x - mInitialMotionX);
                     int nextPage = determineTargetPage(currentPage, pageOffset, initialVelocity,
                             totalDelta);
-                    setCurrentItemInternal(nextPage, true, true, initialVelocity);
+
+                    if ((nextPage <= mCutOffPage && mPagerDirection == PagerDirection.PAGER_DIRECTION_LTR) ||
+                    		(nextPage >= mCutOffPage && mPagerDirection == PagerDirection.PAGER_DIRECTION_RTL))
+                    	setCurrentItemInternal(nextPage, true, true, initialVelocity);
 
                     mActivePointerId = INVALID_POINTER;
                     endDrag();
@@ -3040,7 +3042,10 @@ public class RtlSupportViewPager extends ViewGroup {
         }
     }
     
-    public void blockSwipe(int cutOfPage) {
+    public void blockSwipeTo(int cutOfPage) {
+    	if (mCutOffPage == getIndex(cutOfPage)){
+    		return;
+    	}
 		if (mPagerDirection == PagerDirection.PAGER_DIRECTION_RTL){
 			blockSwipeLeftAt(false, cutOfPage);
 		} else {
@@ -3050,7 +3055,13 @@ public class RtlSupportViewPager extends ViewGroup {
 	}
     
 	public void setCutOffPage(int cutOffPage) {
-		mCutOffPage = getItem(cutOffPage);
+		mCutOffPage = getIndex(cutOffPage);
+		if (mAdapter != null && mAdapter instanceof RtlSupportPagerAdapter)
+			((RtlSupportPagerAdapter)mAdapter).setCutOfPage(mCutOffPage);
+	}
+	
+	public int getCutOffPage() {
+		return getIndex(mCutOffPage);
 	}
 	
 	public void blockSwipeLeftAt(boolean canSwipeLeft, int cutOfPage) {
@@ -3087,13 +3098,25 @@ public class RtlSupportViewPager extends ViewGroup {
 		this.mPagerDirection = pagerDirection;
 	}
 	
-	protected int getItem(int index) {
+	protected int getIndex(int index) {
 		if (mPagerDirection == PagerDirection.PAGER_DIRECTION_RTL){
 			int newIndex = (mAdapter.getCount()-1) - index;
 			return newIndex;
 		} else {
 			return index;
 		}
+	}
+	
+	public int getStepIndex(){
+		return mCurItem;
+	}
+	
+	public int getStepCutOfPageIndex(){
+		return mCutOffPage;
+	}
+	
+	public void setStepIndexCurrentItem(int index) {
+		setCurrentItem(getIndex(index));
 	}
 
 }
