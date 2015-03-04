@@ -42,6 +42,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
@@ -239,6 +240,7 @@ public class RtlSupportViewPager extends ViewGroup {
 
     private OnPageChangeListener mOnPageChangeListener;
     private OnPageChangeListener mInternalPageChangeListener;
+    private OnPageChangeListener mSlidingTabPageChangeListener;
     private OnAdapterChangeListener mAdapterChangeListener;
     private PageTransformer mPageTransformer;
     private Method mSetChildrenDrawingOrderEnabled;
@@ -425,6 +427,10 @@ public class RtlSupportViewPager extends ViewGroup {
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageScrollStateChanged(newState);
         }
+        if (mSlidingTabPageChangeListener != null) {
+        	mSlidingTabPageChangeListener.onPageScrollStateChanged(newState);
+        }
+
     }
 
     /**
@@ -589,6 +595,9 @@ public class RtlSupportViewPager extends ViewGroup {
             if (dispatchSelected && mInternalPageChangeListener != null) {
                 mInternalPageChangeListener.onPageSelected(item);
             }
+            if (dispatchSelected && mSlidingTabPageChangeListener != null) {
+            	mSlidingTabPageChangeListener.onPageSelected(item);
+            }
             requestLayout();
         } else {
             populate(item);
@@ -613,12 +622,18 @@ public class RtlSupportViewPager extends ViewGroup {
             if (dispatchSelected && mInternalPageChangeListener != null) {
                 mInternalPageChangeListener.onPageSelected(item);
             }
+            if (dispatchSelected && mSlidingTabPageChangeListener != null) {
+            	mSlidingTabPageChangeListener.onPageSelected(item);
+            }
         } else {
             if (dispatchSelected && mOnPageChangeListener != null) {
                 mOnPageChangeListener.onPageSelected(item);
             }
             if (dispatchSelected && mInternalPageChangeListener != null) {
                 mInternalPageChangeListener.onPageSelected(item);
+            }
+            if (dispatchSelected && mSlidingTabPageChangeListener != null) {
+            	mSlidingTabPageChangeListener.onPageSelected(item);
             }
             completeScroll(false);
             scrollTo(destX, 0);
@@ -634,6 +649,16 @@ public class RtlSupportViewPager extends ViewGroup {
      */
     public void setOnPageChangeListener(OnPageChangeListener listener) {
         mOnPageChangeListener = listener;
+    }
+    
+    /**
+     * Set a listener that will be invoked whenever the page changes or is incrementally
+     * scrolled. See {@link OnPageChangeListener}.
+     *
+     * @param listener Listener to set
+     */
+    public void setSlidingTabListener(OnPageChangeListener listener) {
+    	mSlidingTabPageChangeListener = listener;
     }
 
     /**
@@ -1758,6 +1783,9 @@ public class RtlSupportViewPager extends ViewGroup {
         if (mInternalPageChangeListener != null) {
             mInternalPageChangeListener.onPageScrolled(position, offset, offsetPixels);
         }
+        if (mSlidingTabPageChangeListener != null) {
+        	mSlidingTabPageChangeListener.onPageScrolled(position, offset, offsetPixels);
+        }
 
         if (mPageTransformer != null) {
             final int scrollX = getScrollX();
@@ -2093,7 +2121,7 @@ public class RtlSupportViewPager extends ViewGroup {
                     int nextPage = determineTargetPage(currentPage, pageOffset, initialVelocity,
                             totalDelta);
 
-                    if ((nextPage <= mCutOffPage && mPagerDirection == PagerDirection.PAGER_DIRECTION_LTR) ||
+                    if (mCutOffPage == -1 || (nextPage <= mCutOffPage && mPagerDirection == PagerDirection.PAGER_DIRECTION_LTR) ||
                     		(nextPage >= mCutOffPage && mPagerDirection == PagerDirection.PAGER_DIRECTION_RTL))
                     	setCurrentItemInternal(nextPage, true, true, initialVelocity);
 
