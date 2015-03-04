@@ -68,9 +68,8 @@ public abstract class RtlSupportPagerAdapter extends FragmentStatePagerAdapter {
 	
 	@Override
     public int getItemPosition(Object object) {
-        // TODO: be smarter about this
-        if (object == mPrimaryItem || (mCutOfPage >= (getCount()-1 /*index of last page in LTR*/) && mPagerDirection == PagerDirection.PAGER_DIRECTION_LTR) || 
-        		(mCutOfPage <= (0 /*index of last page in RTL*/) && mPagerDirection == PagerDirection.PAGER_DIRECTION_LTR)) {
+        if (object == mPrimaryItem /*||(mCutOfPage >= (getCount()-1 index of last page in LTR) && mPagerDirection == PagerDirection.PAGER_DIRECTION_LTR) || 
+        		(mCutOfPage <= (0 index of last page in RTL) && mPagerDirection == PagerDirection.PAGER_DIRECTION_RTL)*/) {
             // Re-use the current fragment (its position never changes)
             return POSITION_UNCHANGED;
         }
