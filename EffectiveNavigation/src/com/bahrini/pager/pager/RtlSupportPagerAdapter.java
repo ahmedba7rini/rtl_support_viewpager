@@ -1,6 +1,6 @@
-package com.bahrini.effectivenavigation;
+package com.bahrini.pager.pager;
 
-import com.bahrini.effectivenavigation.RtlSupportViewPager.PagerDirection;
+import com.bahrini.pager.pager.RtlSupportViewPager.PagerDirection;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

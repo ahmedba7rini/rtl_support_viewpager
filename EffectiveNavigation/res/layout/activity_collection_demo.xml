@@ -12,9 +12,24 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-
-<com.bahrini.effectivenavigation.RtlSupportViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pager"
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tabs="http://schemas.android.com/apk/res/com.bahrini.pager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.bahrini.pager.tabs.SlidingTabLayout
+        android:id="@+id/sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tabs:currentTabBackground="@color/current"
+        tabs:nextTabBackground="@color/next"
+        tabs:previousTabBackground="@color/previous" />
+
+    <com.bahrini.pager.pager.RtlSupportViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

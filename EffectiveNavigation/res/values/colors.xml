@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="previous">#ffb762</color>
+    <color name="current">#dd6000</color>
+    <color name="next">#d5cec5</color>
+
+</resources>

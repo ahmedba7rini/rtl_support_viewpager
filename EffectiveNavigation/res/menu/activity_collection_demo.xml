@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Search, should appear as action button -->
+    <item
+        android:id="@+id/switch_ltr"
+        android:showAsAction="never"
+        android:title="@string/switch_ltr"/>
+    
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/switch_rtl"
+        android:showAsAction="never"
+        android:title="@string/switch_rtl"/>
+
+</menu>

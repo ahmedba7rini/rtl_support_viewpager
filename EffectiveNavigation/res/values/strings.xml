@@ -12,13 +12,21 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
 <resources>
+
     <string name="app_name">Effective Navigation</string>
-
     <string name="dummy_section_text">Section %1d is just a dummy section.</string>
-
     <string name="demo_external_activity">Demo External Activity</string>
     <string name="demo_collection">Demo Collection</string>
+
+    <string name="switch_ltr">Switch to LTR</string>
+    <string name="switch_rtl">Switch to RTL</string>
+
+    <string name="tr_page_1_title">بيانات تذكرة الطيران</string>
+    <string name="tr_page_2_title">المسافرون</string>
+    <string name="tr_page_3_title">بيانات أخرى</string>
+    <string name="tr_page_4_title">تسليم الطلب</string>
+
 </resources>

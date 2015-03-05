@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bahrini.effectivenavigation;
+package com.bahrini.pager.pager;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
