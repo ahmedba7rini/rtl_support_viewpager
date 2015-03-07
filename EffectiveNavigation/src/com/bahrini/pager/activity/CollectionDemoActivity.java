@@ -71,11 +71,6 @@ public class CollectionDemoActivity extends FragmentActivity {
 		// Set up action bar.
 		final ActionBar actionBar = getActionBar();
 
-		// Specify that the Home button should show an "Up" caret, indicating
-		// that touching the
-		// button will take the user one step up in the application's hierarchy.
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-
 		/*
 		 * View Pager implementation 
 		 */
@@ -84,19 +79,7 @@ public class CollectionDemoActivity extends FragmentActivity {
 		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
 		
 		mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-		/*mSlidingTabLayout.setCustomTabView(R.layout.tab_view, R.id.tabview_text);*/
 		mSlidingTabLayout.setViewPager(mViewPager);
-		
-		/*
-		 * to disable swiping on 3rd page (index 2).
-		 */
-//		mViewPager.blockSwipeTo(1);
-		
-//		mViewPager.
-		
-		/*
-		 * 
-		 */
 		
 	}
 	
@@ -129,6 +112,10 @@ public class CollectionDemoActivity extends FragmentActivity {
 		mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(
 				getSupportFragmentManager(), PagerDirection.PAGER_DIRECTION_RTL); 
 		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+		//can set background to each state in the sliding tabs
+//		mSlidingTabLayout.setCurrentSelectionRes(R.drawable.rtl_current);
+//		mSlidingTabLayout.setNextSelectionRes(R.drawable.rtl_next);
+//		mSlidingTabLayout.setPreviousSelectionRes(R.drawable.rtl_prev);
 		mSlidingTabLayout.setViewPager(mViewPager);
 	}
 
