@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package com.bahrini.effectivenavigation;
+package com.bahrini.pager.activity;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bahrini.effectivenavigation.RtlSupportViewPager.PagerDirection;
-import com.example.android.effectivenavigation.R;
+import com.bahrini.pager.R;
+import com.bahrini.pager.pager.RtlSupportPagerAdapter;
+import com.bahrini.pager.pager.RtlSupportViewPager;
+import com.bahrini.pager.pager.RtlSupportViewPager.PagerDirection;
 
 public class CollectionDemoActivity extends FragmentActivity {
 
@@ -48,7 +51,7 @@ public class CollectionDemoActivity extends FragmentActivity {
 	 * object collection.
 	 */
 	RtlSupportViewPager mViewPager;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collection_demo);
@@ -62,7 +65,7 @@ public class CollectionDemoActivity extends FragmentActivity {
 				getSupportFragmentManager(), PagerDirection.PAGER_DIRECTION_RTL); 
 
 		// Set up action bar.
-		final ActionBar actionBar = getActionBar();
+//		final ActionBar actionBar = getActionBar();
 
 		// Specify that the Home button should show an "Up" caret, indicating
 		// that touching the
@@ -79,7 +82,7 @@ public class CollectionDemoActivity extends FragmentActivity {
 		/*
 		 * to disable swiping on 3rd page (index 2).
 		 */
-		mViewPager.blockSwipeTo(2);
+		mViewPager.blockSwipeTo(3);
 		
 //		mViewPager.
 		
@@ -88,20 +91,50 @@ public class CollectionDemoActivity extends FragmentActivity {
 		 */
 		
 	}
-
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.activity_collection_demo, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.switch_ltr:
+	            switchLTR();
+	            return true;
+	        case R.id.switch_rtl:
+	        	switchRTL();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+
+
+
+	private void switchRTL() {
+		mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(
+				getSupportFragmentManager(), PagerDirection.PAGER_DIRECTION_RTL); 
+		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+		mViewPager.blockSwipeTo(3);
+	}
+
+	private void switchLTR() {
+		mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(
+				getSupportFragmentManager(), PagerDirection.PAGER_DIRECTION_LTR); 
+		mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+		mViewPager.blockSwipeTo(3);
 	}
 
 	/**
 	 * {@link RtlSupportPagerAdapter} adapter implementation
 	 */
-	public static class DemoCollectionPagerAdapter extends
+	public class DemoCollectionPagerAdapter extends
 			RtlSupportPagerAdapter {
 
 		public DemoCollectionPagerAdapter(FragmentManager fm, PagerDirection pagerDirection) {

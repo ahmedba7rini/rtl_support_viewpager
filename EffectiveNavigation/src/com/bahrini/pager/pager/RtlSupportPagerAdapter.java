@@ -1,11 +1,11 @@
-package com.bahrini.effectivenavigation;
-
-import com.bahrini.effectivenavigation.RtlSupportViewPager.PagerDirection;
+package com.bahrini.pager.pager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
+
+import com.bahrini.pager.pager.RtlSupportViewPager.PagerDirection;
 
 public abstract class RtlSupportPagerAdapter extends FragmentStatePagerAdapter {
 

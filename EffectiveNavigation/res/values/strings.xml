@@ -21,4 +21,7 @@
 
     <string name="demo_external_activity">Demo External Activity</string>
     <string name="demo_collection">Demo Collection</string>
+    <string name="switch_ltr">Switch to LTR</string>
+    <string name="switch_rtl">Switch to RTL</string>
+
 </resources>

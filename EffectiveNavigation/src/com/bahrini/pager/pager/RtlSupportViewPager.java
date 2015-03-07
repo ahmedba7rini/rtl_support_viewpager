@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bahrini.effectivenavigation;
+package com.bahrini.pager.pager;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -42,7 +42,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityRecordCompat;
